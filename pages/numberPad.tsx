@@ -1,7 +1,27 @@
 import React from "react";
 import { Button } from "./button";
 
-const number = ["1", "2", "3", "4", "5", "6", "7", "8", "9"];
+const number = [
+  "AC",
+  "±",
+  "%",
+  "÷",
+  "7",
+  "8",
+  "9",
+  "×",
+  "4",
+  "5",
+  "6",
+  "−",
+  "1",
+  "2",
+  "3",
+  "+",
+  "0",
+  ".",
+  "=",
+];
 
 export const NumberPad = ({
   setDisplayValue,
@@ -9,20 +29,41 @@ export const NumberPad = ({
   setDisplayValue: Function;
 }) => {
   const onClickHandler = (value: string) => {
-    setDisplayValue((state: string) => (state += value));
+    switch (value) {
+      default: {
+        setDisplayValue((state: string) => (state += value));
+        break;
+      }
+      case "AC": {
+        setDisplayValue("");
+      }
+      case "±":
+        break;
+      case "%":
+        break;
+      case "÷":
+        break;
+      case "×":
+        break;
+      case "−":
+        break;
+      case "+":
+        break;
+      case "=":
+        break;
+    }
   };
 
   return (
-    <div className="grid grid-cols-3 grid-rows-4 gap-4 text-center">
+    <div className="grid grid-cols-4 grid-rows-4 gap-4 text-center">
       {number.map((x) => (
-        <Button key={x} value={x} onClickHandler={() => onClickHandler(x)} />
+        <Button
+          key={x}
+          className={x === "0" ? "col-span-2" : ""}
+          value={x}
+          onClickHandler={() => onClickHandler(x)}
+        />
       ))}
-      <Button
-        className="col-span-2"
-        value={0}
-        onClickHandler={() => onClickHandler("0")}
-      />
-      <Button value={"."} onClickHandler={() => onClickHandler(".")} />
     </div>
   );
 };
