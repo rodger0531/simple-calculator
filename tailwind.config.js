@@ -4,6 +4,7 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: { digital: "Digital-7 Mono" },
+      minWidth: { 36: "9rem" },
     },
   },
   variants: {

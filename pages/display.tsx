@@ -1,6 +1,7 @@
 import React from "react";
 
-export const Display = ({ value }: { value: number }) => {
-  console.log("🚀 ~ file: display.tsx ~ line 4 ~ Display ~ value", value);
-  return <div className="font-digital text-8xl">value</div>;
+export const Display = ({ value }: { value: string }) => {
+  return (
+    <div className="font-digital text-8xl w-full text-right">{value || 0}</div>
+  );
 };
