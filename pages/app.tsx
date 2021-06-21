@@ -28,7 +28,8 @@ export default function App() {
     }
 
     setResult(newResult);
-    setDisplay(newResult.toString().slice(0, 10));
+    // Multiple string and number conversions to prevent floating point calc errors
+    setDisplay(`${+`${newResult}`.slice(0, 10)}`);
 
     return true;
   };
