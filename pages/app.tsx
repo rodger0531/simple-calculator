@@ -54,9 +54,16 @@ export default function App() {
   };
 
   const onPointButtonClick = () => {
-    if (display.indexOf(".") > -1) return;
-    let newDisplay = waitingOperand ? "0" : display;
-    setDisplay((newDisplay += "."));
+    let newDisplay = display;
+    if (waitingOperand) {
+      newDisplay = "0";
+    }
+
+    if (newDisplay.indexOf(".") === -1) {
+      newDisplay += ".";
+    }
+
+    setDisplay(newDisplay);
     setWaitingOperand(false);
   };
 

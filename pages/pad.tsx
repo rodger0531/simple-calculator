@@ -32,7 +32,6 @@ export default function Pad({
   onMemoryMinusButtonClick,
 }: PadProps) {
   const handleKeyDown = ({ keyCode, shiftKey }: KeyboardEvent) => {
-    console.log(keyCode);
     if (keyCode >= 48 && keyCode <= 57 && !shiftKey) {
       onDigitButtonClick((keyCode - 48) as Digit);
     } else if (keyCode >= 96 && keyCode <= 105) {
