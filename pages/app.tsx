@@ -46,11 +46,16 @@ export default function App() {
     setDisplay(newDisplay);
   };
 
-  const onPointButtonClick = () => {};
+  const onPointButtonClick = () => {
+    if (display.indexOf(".") > -1) return;
+    let newDisplay = waitingOperand ? "0" : display;
+    setDisplay((newDisplay += "."));
+    setWaitingOperand(false);
+  };
 
   const onOperatorButtonClick = (operator: Operator) => {
     const operand = Number(display);
-    if (typeof pendingOperator !== "undefined") {
+    if (pendingOperator && !waitingOperand) {
       if (!calculate(operand)) {
         return;
       }
@@ -66,7 +71,8 @@ export default function App() {
 
   const onEqualButtonClick = () => {
     const operand = Number(display);
-    if (typeof pendingOperator !== "undefined") {
+
+    if (pendingOperator && !waitingOperand) {
       if (!calculate(operand)) {
         return;
       }
@@ -76,6 +82,7 @@ export default function App() {
     }
 
     setResult(operand);
+    setWaitingOperand(true);
   };
 
   const onAllClearButtonClick = () => {
