@@ -9,7 +9,7 @@ export default function Display({
 }) {
   return (
     <div className="font-digital w-full text-right my-8 px-6 text-white">
-      <div className="text-xl h-12">{expression}</div>
+      <div className="text-xl h-12 text-gray-500">{expression}</div>
       <div className="text-8xl">{value}</div>
     </div>
   );
