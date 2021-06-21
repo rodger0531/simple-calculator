@@ -67,7 +67,10 @@ export default function App() {
     setWaitingOperand(true);
   };
 
-  const onChangeSignButtonClick = () => {};
+  const onChangeSignButtonClick = () => {
+    if (display === "0") return;
+    setDisplay((state) => (-Number(state)).toString());
+  };
 
   const onEqualButtonClick = () => {
     const operand = Number(display);
