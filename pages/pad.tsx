@@ -68,11 +68,11 @@ export default function Pad({
   });
 
   return (
-    <div className="grid grid-cols-4 grid-rows-5 text-center w-128 h-120">
+    <div className="grid grid-cols-4 grid-rows-5 text-center w-144 h-120">
       <div className="col-span-3 grid grid-flow-col grid-cols-3">
         <Button
           value="AC"
-          className="bg-red-900"
+          className="bg-red-900 hover:bg-red-800"
           onClickHandler={onAllClearButtonClick}
         />
         <Button value="C" onClickHandler={onClearEntryButtonClick} />
@@ -83,7 +83,7 @@ export default function Pad({
           <Button
             key={operator}
             value={operator}
-            className="bg-yellow-600"
+            className="bg-yellow-600 hover:bg-yellow-500"
             onClickHandler={
               operator === "="
                 ? onEqualButtonClick

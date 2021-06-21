@@ -11,7 +11,19 @@ export default function Button({
 }) {
   return (
     <button
-      className={`border focus:outline-none border-gray-900 bg-gray-800 text-white text-5xl ${className}`}
+      className={`
+        border
+        focus:outline-none
+        border-gray-900
+        bg-gray-800
+        hover:bg-gray-900
+        duration-300
+        transition-colors
+        text-white
+        text-5xl
+        active:bg-opacity-50
+        ${className}
+      `}
       type="button"
       onClick={() => onClickHandler()}
     >
