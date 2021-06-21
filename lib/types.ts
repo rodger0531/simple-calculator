@@ -1,2 +1,2 @@
 export type Digit = number;
-export type Operator = "+" | "-" | "×" | "÷";
+export type Operator = "+" | "-" | "×" | "÷" | string;
