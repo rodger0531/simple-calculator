@@ -11,7 +11,10 @@ export default function Button({
 }) {
   return (
     <button
-      className={"min-w-36 h-28 border rounded text-4xl " + className}
+      className={
+        "min-w-36 h-28 border border-gray-900 bg-gray-800 text-white text-4xl " +
+        className
+      }
       type="button"
       onClick={() => onClickHandler()}
     >
