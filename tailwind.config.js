@@ -5,7 +5,7 @@ module.exports = {
     extend: {
       fontFamily: { digital: "Digital-7 Mono" },
       minWidth: { 36: "9rem" },
-      spacing: { 128: "32rem" },
+      spacing: { 128: "32rem", 120: "30rem" },
     },
   },
   variants: {

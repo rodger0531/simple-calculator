@@ -34,7 +34,7 @@ export default function Pad({
   onMemoryMinusButtonClick,
 }: PadProps) {
   return (
-    <div className="grid grid-cols-4 grid-rows-5 text-center w-128 h-128">
+    <div className="grid grid-cols-4 grid-rows-5 text-center w-128 h-120">
       <div className="col-span-3 grid grid-flow-col grid-cols-3">
         <Button
           value="AC"
