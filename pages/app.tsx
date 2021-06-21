@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import { Display } from "./display";
-import { Pad } from "./pad";
+import Display from "./display";
+import Pad from "./pad";
 
-export const App = () => {
+export default function App() {
   const [displayValue, setDisplayValue] = useState<any>("");
 
   return (
@@ -11,4 +11,4 @@ export const App = () => {
       <Pad displayValue={displayValue} setDisplayValue={setDisplayValue} />
     </div>
   );
-};
+}

@@ -1,6 +1,6 @@
 import React from "react";
 
-export const Button = ({
+export default function Button({
   value,
   className = "",
   onClickHandler,
@@ -8,7 +8,7 @@ export const Button = ({
   value: number | string;
   className?: string;
   onClickHandler: Function;
-}) => {
+}) {
   return (
     <button
       className={"min-w-36 h-28 border rounded text-4xl " + className}
@@ -18,4 +18,4 @@ export const Button = ({
       {value}
     </button>
   );
-};
+}
