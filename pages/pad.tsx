@@ -17,7 +17,7 @@ interface PadProps {
   onMemoryMinusButtonClick: () => void;
 }
 
-const Operators = ["×", "÷", "-", "+"];
+const Operators = ["×", "÷", "-", "+", "="];
 const Digits = [7, 8, 9, 4, 5, 6, 1, 2, 3];
 
 export default function Pad({
@@ -36,7 +36,11 @@ export default function Pad({
   return (
     <div className="grid grid-cols-4 grid-rows-5 text-center w-128 h-128">
       <div className="col-span-3 grid grid-flow-col grid-cols-3">
-        <Button value="AC" onClickHandler={onAllClearButtonClick} />
+        <Button
+          value="AC"
+          className="bg-red-900"
+          onClickHandler={onAllClearButtonClick}
+        />
         <Button value="C" onClickHandler={onClearEntryButtonClick} />
         <Button value="±" onClickHandler={onChangeSignButtonClick} />
       </div>
@@ -45,10 +49,14 @@ export default function Pad({
           <Button
             key={operator}
             value={operator}
-            onClickHandler={() => onOperatorButtonClick(operator)}
+            className="bg-yellow-600"
+            onClickHandler={
+              operator === "="
+                ? onEqualButtonClick
+                : () => onOperatorButtonClick(operator)
+            }
           />
         ))}
-        <Button value="=" onClickHandler={onEqualButtonClick} />
       </div>
       <div className="col-span-3 row-span-4 grid grid-cols-3 grid-rows-4">
         {Digits.map((num) => (
