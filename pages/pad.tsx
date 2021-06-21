@@ -1,7 +1,5 @@
-import React, { FunctionComponent } from "react";
+import React, { useState, useEffect } from "react";
 import Button from "./button";
-import { useState } from "react";
-import { multiply } from "../core/utility";
 import { Digit, Operator } from "../lib/types";
 interface PadProps {
   onDigitButtonClick: (digit: Digit) => void;
@@ -33,6 +31,42 @@ export default function Pad({
   onMemoryPlusButtonClick,
   onMemoryMinusButtonClick,
 }: PadProps) {
+  const handleKeyDown = ({ keyCode, shiftKey }: KeyboardEvent) => {
+    console.log(keyCode);
+    if (keyCode >= 48 && keyCode <= 57 && !shiftKey) {
+      onDigitButtonClick((keyCode - 48) as Digit);
+    } else if (keyCode >= 96 && keyCode <= 105) {
+      onDigitButtonClick((keyCode - 96) as Digit);
+    } else if (keyCode === 107 || (keyCode === 187 && shiftKey)) {
+      onOperatorButtonClick("+");
+    } else if (keyCode === 109 || keyCode === 189) {
+      onOperatorButtonClick("-");
+    } else if (keyCode === 106 || (keyCode === 56 && shiftKey)) {
+      onOperatorButtonClick("×");
+    } else if (keyCode === 111 || keyCode === 191) {
+      onOperatorButtonClick("÷");
+    } else if (keyCode === 13 || (keyCode === 187 && !shiftKey)) {
+      onEqualButtonClick();
+    } else if (keyCode === 46) {
+      onClearEntryButtonClick();
+    } else if (keyCode === 27) {
+      onAllClearButtonClick();
+    } else if (keyCode === 78) {
+      onChangeSignButtonClick();
+    } else if (keyCode === 80) {
+      onMemoryPlusButtonClick();
+    } else if (keyCode === 81) {
+      onMemoryMinusButtonClick();
+    } else if (keyCode === 82) {
+      onMemoryRecallButtonClick();
+    }
+  };
+
+  useEffect(() => {
+    document.body.addEventListener("keydown", handleKeyDown);
+    return () => document.body.removeEventListener("keydown", handleKeyDown);
+  });
+
   return (
     <div className="grid grid-cols-4 grid-rows-5 text-center w-128 h-120">
       <div className="col-span-3 grid grid-flow-col grid-cols-3">
