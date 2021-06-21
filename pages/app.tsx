@@ -7,6 +7,7 @@ export default function App() {
   const [display, setDisplay] = useState<string>("0");
   const [result, setResult] = useState<number>(0);
   const [pendingOperator, setPendingOperator] = useState<Operator>();
+  const [waitingOperand, setWaitingOperand] = useState<boolean>(false);
 
   const calculate = (operand: number) => {
     let newResult = result;
@@ -33,7 +34,9 @@ export default function App() {
   };
 
   const onDigitButtonClick = (digit: Digit) => {
-    let newDisplay = pendingOperator ? "" : display;
+    let newDisplay = waitingOperand ? "" : display;
+    waitingOperand && setWaitingOperand(false);
+
     if (display !== "0") {
       newDisplay += digit;
     } else {
@@ -56,6 +59,7 @@ export default function App() {
     }
 
     setPendingOperator(operator);
+    setWaitingOperand(true);
   };
 
   const onChangeSignButtonClick = () => {};
@@ -92,7 +96,14 @@ export default function App() {
 
   return (
     <div>
-      <Display value={display} />
+      <Display
+        value={display}
+        expression={
+          pendingOperator
+            ? `${result} ${pendingOperator} ${waitingOperand ? "" : display}`
+            : ""
+        }
+      />
       <Pad
         onDigitButtonClick={onDigitButtonClick}
         onPointButtonClick={onPointButtonClick}
