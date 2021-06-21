@@ -7,7 +7,7 @@ export default function App() {
   const [display, setDisplay] = useState<string>("0");
   const [result, setResult] = useState<number>(0);
   const [pendingOperator, setPendingOperator] = useState<Operator>();
-  const [waitingOperand, setWaitingOperand] = useState<boolean>(false);
+  const [waitingOperand, setWaitingOperand] = useState<boolean>(true);
 
   const calculate = (operand: number) => {
     let newResult = result;
@@ -34,8 +34,14 @@ export default function App() {
   };
 
   const onDigitButtonClick = (digit: Digit) => {
-    let newDisplay = waitingOperand ? "" : display;
-    waitingOperand && setWaitingOperand(false);
+    let newDisplay = display;
+
+    if ((display === "0" && digit === 0) || display.length > 10) return;
+
+    if (waitingOperand) {
+      newDisplay = "";
+      setWaitingOperand(false);
+    }
 
     if (display !== "0") {
       newDisplay += digit;
@@ -92,6 +98,7 @@ export default function App() {
     setDisplay("0");
     setResult(0);
     setPendingOperator(undefined);
+    setWaitingOperand(true);
   };
 
   const onClearEntryButtonClick = () => {};
