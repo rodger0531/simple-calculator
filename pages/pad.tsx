@@ -87,7 +87,7 @@ export default function Pad({
             onClickHandler={
               operator === "="
                 ? onEqualButtonClick
-                : () => onOperatorButtonClick(operator)
+                : () => onOperatorButtonClick(operator as Operator)
             }
           />
         ))}
@@ -97,7 +97,7 @@ export default function Pad({
           <Button
             key={num}
             value={num}
-            onClickHandler={() => onDigitButtonClick(num)}
+            onClickHandler={() => onDigitButtonClick(num as Digit)}
           />
         ))}
         <Button
