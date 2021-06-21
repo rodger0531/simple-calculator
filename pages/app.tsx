@@ -1,14 +1,111 @@
 import React, { useState } from "react";
 import Display from "./display";
 import Pad from "./pad";
+import { Digit, Operator } from "../lib/types";
 
 export default function App() {
-  const [displayValue, setDisplayValue] = useState<any>("");
+  const [display, setDisplay] = useState<string>("0");
+  const [result, setResult] = useState<number>(0);
+  const [pendingOperator, setPendingOperator] = useState<Operator>();
+
+  const calculate = (operand: number) => {
+    let newResult = result;
+    switch (pendingOperator) {
+      case "+":
+        newResult += operand;
+        break;
+      case "-":
+        newResult -= operand;
+        break;
+      case "×":
+        newResult *= operand;
+        break;
+      case "÷":
+        if (operand === 0) return false;
+        newResult /= operand;
+        break;
+    }
+
+    setResult(newResult);
+    setDisplay(newResult.toString().slice(0, 10));
+
+    return true;
+  };
+
+  const onDigitButtonClick = (digit: Digit) => {
+    let newDisplay = pendingOperator ? "" : display;
+    if (display !== "0") {
+      newDisplay += digit;
+    } else {
+      newDisplay = digit.toString();
+    }
+
+    setDisplay(newDisplay);
+  };
+
+  const onPointButtonClick = () => {};
+
+  const onOperatorButtonClick = (operator: Operator) => {
+    const operand = Number(display);
+    if (typeof pendingOperator !== "undefined") {
+      if (!calculate(operand)) {
+        return;
+      }
+    } else {
+      setResult(operand);
+    }
+
+    setPendingOperator(operator);
+  };
+
+  const onChangeSignButtonClick = () => {};
+
+  const onEqualButtonClick = () => {
+    const operand = Number(display);
+    if (typeof pendingOperator !== "undefined") {
+      if (!calculate(operand)) {
+        return;
+      }
+      setPendingOperator(undefined);
+    } else {
+      setDisplay(operand.toString());
+    }
+
+    setResult(operand);
+  };
+
+  const onAllClearButtonClick = () => {
+    setDisplay("0");
+    setResult(0);
+    setPendingOperator(undefined);
+  };
+
+  const onClearEntryButtonClick = () => {};
+
+  const onMemoryRecallButtonClick = () => {};
+
+  const onMemoryClearButtonClick = () => {};
+
+  const onMemoryPlusButtonClick = () => {};
+
+  const onMemoryMinusButtonClick = () => {};
 
   return (
     <div>
-      <Display value={displayValue} />
-      <Pad displayValue={displayValue} setDisplayValue={setDisplayValue} />
+      <Display value={display} />
+      <Pad
+        onDigitButtonClick={onDigitButtonClick}
+        onPointButtonClick={onPointButtonClick}
+        onOperatorButtonClick={onOperatorButtonClick}
+        onChangeSignButtonClick={onChangeSignButtonClick}
+        onEqualButtonClick={onEqualButtonClick}
+        onAllClearButtonClick={onAllClearButtonClick}
+        onClearEntryButtonClick={onClearEntryButtonClick}
+        onMemoryRecallButtonClick={onMemoryRecallButtonClick}
+        onMemoryClearButtonClick={onMemoryClearButtonClick}
+        onMemoryPlusButtonClick={onMemoryPlusButtonClick}
+        onMemoryMinusButtonClick={onMemoryMinusButtonClick}
+      />
     </div>
   );
 }
