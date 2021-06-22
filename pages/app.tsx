@@ -86,6 +86,8 @@ export default function App() {
     setDisplay((state) => (-Number(state)).toString());
   };
 
+  const onPercentageButtonClick = () => {};
+
   const onEqualButtonClick = () => {
     const operand = Number(display);
 
@@ -134,6 +136,7 @@ export default function App() {
         onPointButtonClick={onPointButtonClick}
         onOperatorButtonClick={onOperatorButtonClick}
         onChangeSignButtonClick={onChangeSignButtonClick}
+        onPercentageButtonClick={onPercentageButtonClick}
         onEqualButtonClick={onEqualButtonClick}
         onAllClearButtonClick={onAllClearButtonClick}
         onClearEntryButtonClick={onClearEntryButtonClick}

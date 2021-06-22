@@ -6,6 +6,7 @@ interface PadProps {
   onPointButtonClick: () => void;
   onOperatorButtonClick: (operator: Operator) => void;
   onChangeSignButtonClick: () => void;
+  onPercentageButtonClick: () => void;
   onEqualButtonClick: () => void;
   onAllClearButtonClick: () => void;
   onClearEntryButtonClick: () => void;
@@ -23,6 +24,7 @@ export default function Pad({
   onPointButtonClick,
   onOperatorButtonClick,
   onChangeSignButtonClick,
+  onPercentageButtonClick,
   onEqualButtonClick,
   onAllClearButtonClick,
   onClearEntryButtonClick,
@@ -74,7 +76,7 @@ export default function Pad({
           className="bg-red-900 hover:bg-red-800"
           onClickHandler={onAllClearButtonClick}
         />
-        <Button value="C" onClickHandler={onClearEntryButtonClick} />
+        <Button value="%" onClickHandler={onPercentageButtonClick} />
         <Button value="±" onClickHandler={onChangeSignButtonClick} />
       </div>
       <div className="row-span-5 grid">
