@@ -8,6 +8,8 @@ export default function App() {
   const [result, setResult] = useState<number>(0);
   const [pendingOperator, setPendingOperator] = useState<Operator>();
   const [waitingOperand, setWaitingOperand] = useState<boolean>(true);
+  const [isShowAllClearButton, setIsShowAllClearButton] =
+    useState<boolean>(true);
 
   const calculate = (operand: number) => {
     let newResult = result;
@@ -39,6 +41,8 @@ export default function App() {
 
     if ((display === "0" && digit === 0) || display.length > 10) return;
 
+    if (isShowAllClearButton) setIsShowAllClearButton(false);
+
     if (waitingOperand) {
       newDisplay = "";
       setWaitingOperand(false);
@@ -55,6 +59,9 @@ export default function App() {
 
   const onPointButtonClick = () => {
     let newDisplay = display;
+
+    if (isShowAllClearButton) setIsShowAllClearButton(false);
+
     if (waitingOperand) {
       newDisplay = "0";
     }
@@ -109,9 +116,14 @@ export default function App() {
     setResult(0);
     setPendingOperator(undefined);
     setWaitingOperand(true);
+    setIsShowAllClearButton(true);
   };
 
-  const onClearEntryButtonClick = () => {};
+  const onClearEntryButtonClick = () => {
+    setDisplay("0");
+    setWaitingOperand(true);
+    setIsShowAllClearButton(true);
+  };
 
   const onMemoryRecallButtonClick = () => {};
 
@@ -132,6 +144,7 @@ export default function App() {
         }
       />
       <Pad
+        isShowAllClearButton={isShowAllClearButton}
         onDigitButtonClick={onDigitButtonClick}
         onPointButtonClick={onPointButtonClick}
         onOperatorButtonClick={onOperatorButtonClick}

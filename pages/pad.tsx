@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import Button from "./button";
 import { Digit, Operator } from "../lib/types";
 interface PadProps {
+  isShowAllClearButton: boolean;
   onDigitButtonClick: (digit: Digit) => void;
   onPointButtonClick: () => void;
   onOperatorButtonClick: (operator: Operator) => void;
@@ -20,6 +21,7 @@ const Operators = ["×", "÷", "-", "+", "="];
 const Digits = [7, 8, 9, 4, 5, 6, 1, 2, 3];
 
 export default function Pad({
+  isShowAllClearButton,
   onDigitButtonClick,
   onPointButtonClick,
   onOperatorButtonClick,
@@ -71,11 +73,15 @@ export default function Pad({
   return (
     <div className="grid grid-cols-4 grid-rows-5 text-center w-144 h-120">
       <div className="col-span-3 grid grid-flow-col grid-cols-3">
-        <Button
-          value="AC"
-          className="bg-red-900 hover:bg-red-800"
-          onClickHandler={onAllClearButtonClick}
-        />
+        {isShowAllClearButton ? (
+          <Button
+            value="AC"
+            className="bg-red-900 hover:bg-red-800"
+            onClickHandler={onAllClearButtonClick}
+          />
+        ) : (
+          <Button value="C" onClickHandler={onClearEntryButtonClick} />
+        )}
         <Button value="%" onClickHandler={onPercentageButtonClick} />
         <Button value="±" onClickHandler={onChangeSignButtonClick} />
       </div>
