@@ -2,39 +2,37 @@ import React, { useState, useEffect } from "react";
 import Button from "./button";
 import { Digit, Operator } from "../lib/types";
 interface PadProps {
-  isShowAllClearButton: boolean;
-  onDigitButtonClick: (digit: Digit) => void;
-  onPointButtonClick: () => void;
-  onOperatorButtonClick: (operator: Operator) => void;
-  onChangeSignButtonClick: () => void;
-  onPercentageButtonClick: () => void;
-  onEqualButtonClick: () => void;
-  onAllClearButtonClick: () => void;
-  onClearEntryButtonClick: () => void;
-  onMemoryRecallButtonClick: () => void;
-  onMemoryClearButtonClick: () => void;
-  onMemoryPlusButtonClick: () => void;
-  onMemoryMinusButtonClick: () => void;
+  result: number;
+  display: string;
+  pendingOperator: Operator | undefined;
+  waitingOperand: boolean;
+  setResult: (number: number) => void;
+  setDisplay: (string: string | ((string: string) => string)) => void;
+  setWaitingOperand: (boolean: boolean) => void;
+  setPendingOperator: (operator: Operator | undefined) => void;
 }
 
 const Operators = ["×", "÷", "-", "+", "="];
 const Digits = [7, 8, 9, 4, 5, 6, 1, 2, 3];
 
 export default function Pad({
-  isShowAllClearButton,
-  onDigitButtonClick,
-  onPointButtonClick,
-  onOperatorButtonClick,
-  onChangeSignButtonClick,
-  onPercentageButtonClick,
-  onEqualButtonClick,
-  onAllClearButtonClick,
-  onClearEntryButtonClick,
-  onMemoryRecallButtonClick,
-  onMemoryClearButtonClick,
-  onMemoryPlusButtonClick,
-  onMemoryMinusButtonClick,
+  result,
+  display,
+  pendingOperator,
+  waitingOperand,
+  setResult,
+  setDisplay,
+  setPendingOperator,
+  setWaitingOperand,
 }: PadProps) {
+  const [isShowAllClearButton, setIsShowAllClearButton] =
+    useState<boolean>(true);
+
+  useEffect(() => {
+    document.body.addEventListener("keydown", handleKeyDown);
+    return () => document.body.removeEventListener("keydown", handleKeyDown);
+  });
+
   const handleKeyDown = ({ keyCode, shiftKey }: KeyboardEvent) => {
     if (keyCode >= 48 && keyCode <= 57 && !shiftKey) {
       onDigitButtonClick((keyCode - 48) as Digit);
@@ -65,10 +63,127 @@ export default function Pad({
     }
   };
 
-  useEffect(() => {
-    document.body.addEventListener("keydown", handleKeyDown);
-    return () => document.body.removeEventListener("keydown", handleKeyDown);
-  });
+  const calculate = (operand: number) => {
+    let newResult = result;
+    switch (pendingOperator) {
+      case "+":
+        newResult += operand;
+        break;
+      case "-":
+        newResult -= operand;
+        break;
+      case "×":
+        newResult *= operand;
+        break;
+      case "÷":
+        if (operand === 0) return false;
+        newResult /= operand;
+        break;
+    }
+
+    setResult(newResult);
+    // Multiple string and number conversions to prevent floating point calc errors
+    setDisplay(`${+`${newResult}`.slice(0, 10)}`);
+
+    return true;
+  };
+
+  const onDigitButtonClick = (digit: Digit) => {
+    let newDisplay = display;
+
+    if ((display === "0" && digit === 0) || display.length > 10) return;
+
+    if (isShowAllClearButton) setIsShowAllClearButton(false);
+
+    if (waitingOperand) {
+      newDisplay = "";
+      setWaitingOperand(false);
+    }
+
+    if (display !== "0") {
+      newDisplay += digit;
+    } else {
+      newDisplay = digit.toString();
+    }
+
+    setDisplay(newDisplay);
+  };
+
+  const onPointButtonClick = () => {
+    let newDisplay = display;
+
+    if (isShowAllClearButton) setIsShowAllClearButton(false);
+
+    if (waitingOperand) {
+      newDisplay = "0";
+    }
+
+    if (newDisplay.indexOf(".") === -1) {
+      newDisplay += ".";
+    }
+
+    setDisplay(newDisplay);
+    setWaitingOperand(false);
+  };
+
+  const onOperatorButtonClick = (operator: Operator) => {
+    const operand = Number(display);
+    if (pendingOperator && !waitingOperand) {
+      if (!calculate(operand)) {
+        return;
+      }
+    } else {
+      setResult(operand);
+    }
+
+    setPendingOperator(operator);
+    setWaitingOperand(true);
+  };
+
+  const onChangeSignButtonClick = () => {
+    if (display === "0") return;
+    setDisplay((state: String) => (-Number(state)).toString());
+  };
+
+  const onPercentageButtonClick = () => {};
+
+  const onEqualButtonClick = () => {
+    const operand = Number(display);
+
+    if (pendingOperator && !waitingOperand) {
+      if (!calculate(operand)) {
+        return;
+      }
+      setPendingOperator(undefined);
+    } else {
+      setDisplay(operand.toString());
+    }
+
+    setResult(operand);
+    setWaitingOperand(true);
+  };
+
+  const onAllClearButtonClick = () => {
+    setDisplay("0");
+    setResult(0);
+    setPendingOperator(undefined);
+    setWaitingOperand(true);
+    setIsShowAllClearButton(true);
+  };
+
+  const onClearEntryButtonClick = () => {
+    setDisplay("0");
+    setWaitingOperand(true);
+    setIsShowAllClearButton(true);
+  };
+
+  const onMemoryRecallButtonClick = () => {};
+
+  const onMemoryClearButtonClick = () => {};
+
+  const onMemoryPlusButtonClick = () => {};
+
+  const onMemoryMinusButtonClick = () => {};
 
   return (
     <div className="grid grid-cols-4 grid-rows-5 text-center w-144 h-120">

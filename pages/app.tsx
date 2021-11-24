@@ -6,132 +6,10 @@ import { Digit, Operator } from "../lib/types";
 export default function App() {
   const [display, setDisplay] = useState<string>("0");
   const [result, setResult] = useState<number>(0);
-  const [pendingOperator, setPendingOperator] = useState<Operator>();
+  const [pendingOperator, setPendingOperator] = useState<
+    Operator | undefined
+  >();
   const [waitingOperand, setWaitingOperand] = useState<boolean>(true);
-  const [isShowAllClearButton, setIsShowAllClearButton] =
-    useState<boolean>(true);
-
-  const calculate = (operand: number) => {
-    let newResult = result;
-    switch (pendingOperator) {
-      case "+":
-        newResult += operand;
-        break;
-      case "-":
-        newResult -= operand;
-        break;
-      case "×":
-        newResult *= operand;
-        break;
-      case "÷":
-        if (operand === 0) return false;
-        newResult /= operand;
-        break;
-    }
-
-    setResult(newResult);
-    // Multiple string and number conversions to prevent floating point calc errors
-    setDisplay(`${+`${newResult}`.slice(0, 10)}`);
-
-    return true;
-  };
-
-  const onDigitButtonClick = (digit: Digit) => {
-    let newDisplay = display;
-
-    if ((display === "0" && digit === 0) || display.length > 10) return;
-
-    if (isShowAllClearButton) setIsShowAllClearButton(false);
-
-    if (waitingOperand) {
-      newDisplay = "";
-      setWaitingOperand(false);
-    }
-
-    if (display !== "0") {
-      newDisplay += digit;
-    } else {
-      newDisplay = digit.toString();
-    }
-
-    setDisplay(newDisplay);
-  };
-
-  const onPointButtonClick = () => {
-    let newDisplay = display;
-
-    if (isShowAllClearButton) setIsShowAllClearButton(false);
-
-    if (waitingOperand) {
-      newDisplay = "0";
-    }
-
-    if (newDisplay.indexOf(".") === -1) {
-      newDisplay += ".";
-    }
-
-    setDisplay(newDisplay);
-    setWaitingOperand(false);
-  };
-
-  const onOperatorButtonClick = (operator: Operator) => {
-    const operand = Number(display);
-    if (pendingOperator && !waitingOperand) {
-      if (!calculate(operand)) {
-        return;
-      }
-    } else {
-      setResult(operand);
-    }
-
-    setPendingOperator(operator);
-    setWaitingOperand(true);
-  };
-
-  const onChangeSignButtonClick = () => {
-    if (display === "0") return;
-    setDisplay((state) => (-Number(state)).toString());
-  };
-
-  const onPercentageButtonClick = () => {};
-
-  const onEqualButtonClick = () => {
-    const operand = Number(display);
-
-    if (pendingOperator && !waitingOperand) {
-      if (!calculate(operand)) {
-        return;
-      }
-      setPendingOperator(undefined);
-    } else {
-      setDisplay(operand.toString());
-    }
-
-    setResult(operand);
-    setWaitingOperand(true);
-  };
-
-  const onAllClearButtonClick = () => {
-    setDisplay("0");
-    setResult(0);
-    setPendingOperator(undefined);
-    setWaitingOperand(true);
-    setIsShowAllClearButton(true);
-  };
-
-  const onClearEntryButtonClick = () => {
-    setDisplay("0");
-    setWaitingOperand(true);
-    setIsShowAllClearButton(true);
-  };
-
-  const onMemoryRecallButtonClick = () => {};
-
-  const onMemoryClearButtonClick = () => {};
-
-  const onMemoryPlusButtonClick = () => {};
-
-  const onMemoryMinusButtonClick = () => {};
 
   return (
     <div>
@@ -144,19 +22,14 @@ export default function App() {
         }
       />
       <Pad
-        isShowAllClearButton={isShowAllClearButton}
-        onDigitButtonClick={onDigitButtonClick}
-        onPointButtonClick={onPointButtonClick}
-        onOperatorButtonClick={onOperatorButtonClick}
-        onChangeSignButtonClick={onChangeSignButtonClick}
-        onPercentageButtonClick={onPercentageButtonClick}
-        onEqualButtonClick={onEqualButtonClick}
-        onAllClearButtonClick={onAllClearButtonClick}
-        onClearEntryButtonClick={onClearEntryButtonClick}
-        onMemoryRecallButtonClick={onMemoryRecallButtonClick}
-        onMemoryClearButtonClick={onMemoryClearButtonClick}
-        onMemoryPlusButtonClick={onMemoryPlusButtonClick}
-        onMemoryMinusButtonClick={onMemoryMinusButtonClick}
+        result={result}
+        display={display}
+        pendingOperator={pendingOperator}
+        waitingOperand={waitingOperand}
+        setResult={setResult}
+        setDisplay={setDisplay}
+        setPendingOperator={setPendingOperator}
+        setWaitingOperand={setWaitingOperand}
       />
     </div>
   );
