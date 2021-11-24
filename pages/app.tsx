@@ -12,7 +12,7 @@ export default function App() {
   const [waitingOperand, setWaitingOperand] = useState<boolean>(true);
 
   return (
-    <div>
+    <div className="shadow-xl">
       <Display
         value={display}
         expression={
