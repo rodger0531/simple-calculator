@@ -63,7 +63,7 @@ export default function Pad({
     }
   };
 
-  const calculate = (operand: number) => {
+  const calculate = (operand: number): boolean => {
     let newResult = result;
     switch (pendingOperator) {
       case "+":
@@ -88,7 +88,7 @@ export default function Pad({
     return true;
   };
 
-  const onDigitButtonClick = (digit: Digit) => {
+  const onDigitButtonClick = (digit: Digit): void => {
     let newDisplay = display;
 
     if ((display === "0" && digit === 0) || display.length > 10) return;
@@ -109,7 +109,7 @@ export default function Pad({
     setDisplay(newDisplay);
   };
 
-  const onPointButtonClick = () => {
+  const onPointButtonClick = (): void => {
     let newDisplay = display;
 
     if (isShowAllClearButton) setIsShowAllClearButton(false);
@@ -126,7 +126,7 @@ export default function Pad({
     setWaitingOperand(false);
   };
 
-  const onOperatorButtonClick = (operator: Operator) => {
+  const onOperatorButtonClick = (operator: Operator): void => {
     const operand = Number(display);
     if (pendingOperator && !waitingOperand) {
       if (!calculate(operand)) {
@@ -140,14 +140,14 @@ export default function Pad({
     setWaitingOperand(true);
   };
 
-  const onChangeSignButtonClick = () => {
+  const onChangeSignButtonClick = (): void => {
     if (display === "0") return;
     setDisplay((state: String) => (-Number(state)).toString());
   };
 
   const onPercentageButtonClick = () => {};
 
-  const onEqualButtonClick = () => {
+  const onEqualButtonClick = (): void => {
     const operand = Number(display);
 
     if (pendingOperator && !waitingOperand) {
@@ -163,7 +163,7 @@ export default function Pad({
     setWaitingOperand(true);
   };
 
-  const onAllClearButtonClick = () => {
+  const onAllClearButtonClick = (): void => {
     setDisplay("0");
     setResult(0);
     setPendingOperator(undefined);
@@ -171,7 +171,7 @@ export default function Pad({
     setIsShowAllClearButton(true);
   };
 
-  const onClearEntryButtonClick = () => {
+  const onClearEntryButtonClick = (): void => {
     setDisplay("0");
     setWaitingOperand(true);
     setIsShowAllClearButton(true);
